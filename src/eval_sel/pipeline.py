@@ -21,10 +21,11 @@ def create_pipeline(use_scaler: bool, max_iter: int, log_reg_c: float, random_st
     return Pipeline(steps=pipeline_steps)
 
 
-def create_tree(max_depth: int, random_state: int) -> Pipeline:
+def create_tree(max_depth: int, criterion: str, random_state: int) -> Pipeline:
     pipeline_steps = [(
         "tree",
-        DecisionTreeClassifier(random_state=random_state, max_depth=max_depth if max_depth > 0 else None),
+        DecisionTreeClassifier(random_state=random_state, max_depth=max_depth if max_depth > 0 else None,
+                               criterion=criterion),
     )]
 
     return Pipeline(steps=pipeline_steps)

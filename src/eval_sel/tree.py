@@ -39,11 +39,18 @@ from .pipeline import create_tree
     type=int,
     show_default=True,
 )
+@click.option(
+    "--criterion",
+    default='gini',
+    type=str,
+    show_default=True,
+)
 def train(
         dataset_path: Path,
         save_model_path: Path,
         random_state: int,
         max_depth: int,
+        criterion: str
 ) -> None:
     X, y = get_dataset(dataset_path)
 
@@ -52,8 +59,9 @@ def train(
     with mlflow.start_run():
         mlflow.log_param("max_depth", max_depth)
         mlflow.log_param("random_state", random_state)
+        mlflow.log_param("criterion", criterion)
 
-        pipeline = create_tree(max_depth, random_state)
+        pipeline = create_tree(max_depth, criterion, random_state)
         mlflow.sklearn.log_model(pipeline, artifact_path="sklearn-model")
 
         scoring = ['accuracy', 'precision_macro', 'recall_macro']
