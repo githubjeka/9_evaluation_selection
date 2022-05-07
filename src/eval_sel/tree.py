@@ -9,7 +9,7 @@ import mlflow.sklearn
 from sklearn.model_selection import KFold, cross_validate
 
 from .data import get_dataset
-from .pipeline import create_pipeline
+from .pipeline import create_tree
 
 
 @click.command()
@@ -40,15 +40,9 @@ from .pipeline import create_pipeline
     show_default=True,
 )
 @click.option(
-    "--max-iter",
-    default=100,
+    "--max_depth",
+    default=5,
     type=int,
-    show_default=True,
-)
-@click.option(
-    "--logreg-c",
-    default=1.0,
-    type=float,
     show_default=True,
 )
 def train(
@@ -56,8 +50,7 @@ def train(
         save_model_path: Path,
         random_state: int,
         use_scaler: bool,
-        max_iter: int,
-        logreg_c: float,
+        max_depth: int,
 ) -> None:
     X, y = get_dataset(dataset_path)
 
@@ -65,11 +58,10 @@ def train(
 
     with mlflow.start_run():
         mlflow.log_param("use_scaler", use_scaler)
-        mlflow.log_param("max_iter", max_iter)
-        mlflow.log_param("logreg_c", logreg_c)
+        mlflow.log_param("max_depth", max_depth)
         mlflow.log_param("random_state", random_state)
 
-        pipeline = create_pipeline(use_scaler, max_iter, logreg_c, random_state)
+        pipeline = create_tree(use_scaler, max_depth, random_state)
         mlflow.sklearn.log_model(pipeline, artifact_path="sklearn-model")
 
         scoring = ['accuracy', 'precision_macro', 'recall_macro']
