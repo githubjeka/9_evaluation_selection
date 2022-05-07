@@ -34,12 +34,6 @@ from .pipeline import create_tree
     show_default=True,
 )
 @click.option(
-    "--use-scaler",
-    default=True,
-    type=bool,
-    show_default=True,
-)
-@click.option(
     "--max_depth",
     default=5,
     type=int,
@@ -49,7 +43,6 @@ def train(
         dataset_path: Path,
         save_model_path: Path,
         random_state: int,
-        use_scaler: bool,
         max_depth: int,
 ) -> None:
     X, y = get_dataset(dataset_path)
@@ -57,11 +50,10 @@ def train(
     kfold = KFold(n_splits=10, random_state=random_state, shuffle=True)
 
     with mlflow.start_run():
-        mlflow.log_param("use_scaler", use_scaler)
         mlflow.log_param("max_depth", max_depth)
         mlflow.log_param("random_state", random_state)
 
-        pipeline = create_tree(use_scaler, max_depth, random_state)
+        pipeline = create_tree(max_depth, random_state)
         mlflow.sklearn.log_model(pipeline, artifact_path="sklearn-model")
 
         scoring = ['accuracy', 'precision_macro', 'recall_macro']
