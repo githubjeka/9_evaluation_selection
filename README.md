@@ -39,3 +39,7 @@ poetry run train
 ```
 poetry run mlflow ui
 ```
+
+### TASK 8
+
+![image](https://user-images.githubusercontent.com/874234/167255789-f340808f-c69d-4269-b64b-ee2ca0d2c1a4.png)
