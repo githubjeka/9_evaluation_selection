@@ -35,7 +35,7 @@ from .pipeline import create_tree
 )
 @click.option(
     "--max_depth",
-    default=5,
+    default=0,
     type=int,
     show_default=True,
 )
