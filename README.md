@@ -88,6 +88,8 @@ black src/eval_sel/
 # 6 files left unchanged.
 ```
 
+![image](https://user-images.githubusercontent.com/874234/167435179-784dd23d-4bfd-4210-9cc0-8d15ef2f6114.png)
+
 Проверка форматирования организована через [flake8](https://flake8.pycqa.org/en/latest/#)
 Используйте следующую команду для запуска этой проверки
 ```bash
