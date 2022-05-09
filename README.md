@@ -62,3 +62,17 @@ poetry run gridcv
 ```
 
 ![image](https://user-images.githubusercontent.com/874234/167406329-3df36202-07c4-4ef5-a8a3-09a558ad3550.png)
+
+## Development
+
+При инициализации проекта для разработки используйте команду
+
+```bash
+poetry install
+```
+
+Для тестов используйте [Pytest](https://docs.pytest.org)
+
+```bash
+poetry run pytest
+```
