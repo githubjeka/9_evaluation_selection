@@ -95,3 +95,11 @@ black src/eval_sel/
 ```bash
 flake8 src/eval_sel/
 ```
+
+Для проверки static typing используйте [mypy](http://www.mypy-lang.org)
+
+```bash
+mypy src/eval_sel/
+```
+
+![image](https://user-images.githubusercontent.com/874234/167434683-6364b7f3-944b-4201-8a10-8bc2b959937f.png)
