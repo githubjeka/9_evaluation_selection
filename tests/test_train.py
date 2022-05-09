@@ -31,6 +31,11 @@ def test_run_train(runner: CliRunner) -> None:
 
 def test_run_train_fake_data(runner: CliRunner) -> None:
     FAKE_DATA_PATH = 'data/fake.csv'
+    RESULT_DATA_PATH = 'models/fake.model.joblib'
+
+    if os.path.exists(RESULT_DATA_PATH):
+        os.remove(RESULT_DATA_PATH)
+
     csvfile = open(FAKE_DATA_PATH, 'w')
     writer = csv.writer(csvfile)
     writer.writerow(
@@ -40,9 +45,11 @@ def test_run_train_fake_data(runner: CliRunner) -> None:
         writer.writerow(generate_data(n))
     csvfile.close()
 
-    result = runner.invoke(train, ["--dataset-path", FAKE_DATA_PATH, ], )
+    result = runner.invoke(train, ["--dataset-path", FAKE_DATA_PATH, "--save-model-path", RESULT_DATA_PATH], )
     assert result.exit_code == 0
+    assert os.path.exists(RESULT_DATA_PATH)
     os.remove(FAKE_DATA_PATH)
+    os.remove(RESULT_DATA_PATH)
 
 
 def test_error_for_invalid_logreg(runner: CliRunner) -> None:
