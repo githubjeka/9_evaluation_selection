@@ -25,11 +25,6 @@ def generate_data(id):
 
 
 def test_run_train(runner: CliRunner) -> None:
-    result = runner.invoke(train, [], )
-    assert result.exit_code == 0
-
-
-def test_run_train_fake_data(runner: CliRunner) -> None:
     FAKE_DATA_PATH = 'data/fake.csv'
     RESULT_DATA_PATH = 'models/fake.model.joblib'
 
@@ -39,13 +34,16 @@ def test_run_train_fake_data(runner: CliRunner) -> None:
     csvfile = open(FAKE_DATA_PATH, 'w')
     writer = csv.writer(csvfile)
     writer.writerow(
-        ['Id', 'Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology', 'Vertical_Distance_To_Hydrology',
+        ['Id', 'Elevation', 'Aspect', 'Slope', 'Horizontal_Distance_To_Hydrology',
+         'Vertical_Distance_To_Hydrology',
          'Horizontal_Distance_To_Roadways', 'Cover_Type'])
     for n in range(1, 100):
         writer.writerow(generate_data(n))
     csvfile.close()
 
-    result = runner.invoke(train, ["--dataset-path", FAKE_DATA_PATH, "--save-model-path", RESULT_DATA_PATH], )
+    result = runner.invoke(train,
+                           ["--dataset-path", FAKE_DATA_PATH, "--save-model-path",
+                            RESULT_DATA_PATH], )
     assert result.exit_code == 0
     assert os.path.exists(RESULT_DATA_PATH)
     os.remove(FAKE_DATA_PATH)
