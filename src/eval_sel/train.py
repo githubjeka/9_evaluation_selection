@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 from joblib import dump
@@ -12,7 +13,7 @@ from .data import get_dataset
 from .pipeline import create_pipeline
 
 
-def validate_logreg_c(ctx, param, value):
+def validate_logreg_c(ctx: Any, param: Any, value: Any) -> Any:
     if value > 0 and value == 1.0:
         return value
     else:
@@ -60,12 +61,12 @@ def validate_logreg_c(ctx, param, value):
     callback=validate_logreg_c,
 )
 def train(
-    dataset_path: Path,
-    save_model_path: Path,
-    random_state: int,
-    use_scaler: bool,
-    max_iter: int,
-    logreg_c: float,
+        dataset_path: Path,
+        save_model_path: Path,
+        random_state: int,
+        use_scaler: bool,
+        max_iter: int,
+        logreg_c: float,
 ) -> None:
     X, y = get_dataset(dataset_path)
 

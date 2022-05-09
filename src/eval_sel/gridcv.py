@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any, Dict
 
 import click
 import mlflow
@@ -33,7 +34,7 @@ def train(
     with mlflow.start_run():
         model = DecisionTreeClassifier(random_state=random_state)
 
-        params = dict()
+        params = dict() # type: Dict[str, Any]
         params["max_features"] = ["auto", "sqrt", "log2"]
         params["criterion"] = ["gini", "entropy"]
         params["max_depth"] = [None, 5, 3]
