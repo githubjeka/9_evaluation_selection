@@ -7,6 +7,7 @@ authors = ["Evgeniy Tkachenko <et.coder@gmail.com>"]
 [tool.poetry.scripts]
 train = "eval_sel.train:train"
 tree = "eval_sel.tree:train"
+gridcv = "eval_sel.gridcv:train"
 
 [tool.poetry.dependencies]
 python = ">=3.9"
