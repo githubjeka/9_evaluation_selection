@@ -12,6 +12,12 @@ from .data import get_dataset
 from .pipeline import create_pipeline
 
 
+def validate_logreg_c(ctx, param, value):
+    if value > 0 and value == 1.0:
+        return value
+    else:
+        raise click.BadParameter("logreg_c format must (0,1]'")
+
 @click.command()
 @click.option(
     "-d",
@@ -50,6 +56,7 @@ from .pipeline import create_pipeline
     default=1.0,
     type=float,
     show_default=True,
+    callback=validate_logreg_c,
 )
 def train(
         dataset_path: Path,
