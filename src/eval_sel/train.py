@@ -18,6 +18,7 @@ def validate_logreg_c(ctx, param, value):
     else:
         raise click.BadParameter("logreg_c format must (0,1]'")
 
+
 @click.command()
 @click.option(
     "-d",
@@ -59,12 +60,12 @@ def validate_logreg_c(ctx, param, value):
     callback=validate_logreg_c,
 )
 def train(
-        dataset_path: Path,
-        save_model_path: Path,
-        random_state: int,
-        use_scaler: bool,
-        max_iter: int,
-        logreg_c: float,
+    dataset_path: Path,
+    save_model_path: Path,
+    random_state: int,
+    use_scaler: bool,
+    max_iter: int,
+    logreg_c: float,
 ) -> None:
     X, y = get_dataset(dataset_path)
 
@@ -79,12 +80,12 @@ def train(
         pipeline = create_pipeline(use_scaler, max_iter, logreg_c, random_state)
         mlflow.sklearn.log_model(pipeline, artifact_path="sklearn-model")
 
-        scoring = ['accuracy', 'precision_macro', 'recall_macro']
+        scoring = ["accuracy", "precision_macro", "recall_macro"]
         score = cross_validate(pipeline, X, y, scoring=scoring, cv=kfold)
 
-        mlflow.log_metric("accuracy", np.array(score['test_accuracy']).mean())
-        mlflow.log_metric("precision", np.array(score['test_precision_macro']).mean())
-        mlflow.log_metric("recall", np.array(score['test_recall_macro']).mean())
+        mlflow.log_metric("accuracy", np.array(score["test_accuracy"]).mean())
+        mlflow.log_metric("precision", np.array(score["test_precision_macro"]).mean())
+        mlflow.log_metric("recall", np.array(score["test_recall_macro"]).mean())
 
         dump(pipeline, save_model_path)
         click.echo(f"Model is saved to {save_model_path}.")

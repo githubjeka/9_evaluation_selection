@@ -41,23 +41,23 @@ from .pipeline import create_tree
 )
 @click.option(
     "--criterion",
-    default='gini',
+    default="gini",
     type=str,
     show_default=True,
 )
 @click.option(
     "--splitter",
-    default='best',
+    default="best",
     type=str,
     show_default=True,
 )
 def train(
-        dataset_path: Path,
-        save_model_path: Path,
-        random_state: int,
-        max_depth: int,
-        criterion: str,
-        splitter: str,
+    dataset_path: Path,
+    save_model_path: Path,
+    random_state: int,
+    max_depth: int,
+    criterion: str,
+    splitter: str,
 ) -> None:
     X, y = get_dataset(dataset_path)
 
@@ -72,12 +72,12 @@ def train(
         pipeline = create_tree(max_depth, criterion, splitter, random_state)
         mlflow.sklearn.log_model(pipeline, artifact_path="sklearn-model")
 
-        scoring = ['accuracy', 'precision_macro', 'recall_macro']
+        scoring = ["accuracy", "precision_macro", "recall_macro"]
         score = cross_validate(pipeline, X, y, scoring=scoring, cv=kfold)
 
-        mlflow.log_metric("accuracy", np.array(score['test_accuracy']).mean())
-        mlflow.log_metric("precision", np.array(score['test_precision_macro']).mean())
-        mlflow.log_metric("recall", np.array(score['test_recall_macro']).mean())
+        mlflow.log_metric("accuracy", np.array(score["test_accuracy"]).mean())
+        mlflow.log_metric("precision", np.array(score["test_precision_macro"]).mean())
+        mlflow.log_metric("recall", np.array(score["test_recall_macro"]).mean())
 
         dump(pipeline, save_model_path)
         click.echo(f"Model is saved to {save_model_path}.")
