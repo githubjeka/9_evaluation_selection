@@ -34,7 +34,7 @@ def train(
     with mlflow.start_run():
         model = DecisionTreeClassifier(random_state=random_state)
 
-        params = dict() # type: Dict[str, Any]
+        params = dict()  # type: Dict[str, Any]
         params["max_features"] = ["auto", "sqrt", "log2"]
         params["criterion"] = ["gini", "entropy"]
         params["max_depth"] = [None, 5, 3]

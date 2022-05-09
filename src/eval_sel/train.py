@@ -61,12 +61,12 @@ def validate_logreg_c(ctx: Any, param: Any, value: Any) -> Any:
     callback=validate_logreg_c,
 )
 def train(
-        dataset_path: Path,
-        save_model_path: Path,
-        random_state: int,
-        use_scaler: bool,
-        max_iter: int,
-        logreg_c: float,
+    dataset_path: Path,
+    save_model_path: Path,
+    random_state: int,
+    use_scaler: bool,
+    max_iter: int,
+    logreg_c: float,
 ) -> None:
     X, y = get_dataset(dataset_path)
 
