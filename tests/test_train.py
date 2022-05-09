@@ -3,6 +3,7 @@ import pytest
 from faker import Faker
 from eval_sel.train import train
 import csv
+import os
 
 
 @pytest.fixture
@@ -19,7 +20,7 @@ def generate_data(id):
             fake.pyint(min_value=200, max_value=300),
             fake.pyint(min_value=200, max_value=300),
             fake.pyint(min_value=-10, max_value=10),
-            fake.pyint(min_value=1, max_value=5),
+            fake.pyint(min_value=1, max_value=7),
             ]
 
 
