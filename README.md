@@ -76,3 +76,5 @@ poetry install
 ```bash
 poetry run pytest
 ```
+
+![image](https://user-images.githubusercontent.com/874234/167427976-b52a6ea2-26bf-44e3-9773-65d1313a509e.png)
