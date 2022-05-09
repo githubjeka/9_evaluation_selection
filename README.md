@@ -103,3 +103,13 @@ mypy src/eval_sel/
 ```
 
 ![image](https://user-images.githubusercontent.com/874234/167434683-6364b7f3-944b-4201-8a10-8bc2b959937f.png)
+
+### Nox
+
+Запуск всех команд доступен через [Nox](https://nox.thea.codes/en/stable/)
+
+```bash
+nox
+```
+
+![image](https://user-images.githubusercontent.com/874234/167442459-0a49a69b-58db-4e6f-8a6c-c87a97067bc4.png)
