@@ -1,4 +1,5 @@
 .idea
 mlruns
+.pytest_cache
 
 # в директории data добавлен свой .gitignore, т.к. пустые директории git не поддерживает.
