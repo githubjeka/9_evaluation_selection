@@ -1,5 +1,7 @@
 .idea
 mlruns
 .pytest_cache
+.nox
+.mypy_cache
 
 # в директории data добавлен свой .gitignore, т.к. пустые директории git не поддерживает.
