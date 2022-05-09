@@ -50,3 +50,15 @@ poetry run tree
 ```
 
 ![image](https://user-images.githubusercontent.com/874234/167255789-f340808f-c69d-4269-b64b-ee2ca0d2c1a4.png)
+
+
+### TASK 9 automatic hyperparameter with nested cross-validation
+
+Запуск
+
+```bash
+# Для просмотра справки запустить `poetry run gridcv --help`
+poetry run gridcv
+```
+
+![image](https://user-images.githubusercontent.com/874234/167406329-3df36202-07c4-4ef5-a8a3-09a558ad3550.png)
