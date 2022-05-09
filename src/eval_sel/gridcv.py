@@ -3,8 +3,9 @@ from pathlib import Path
 import click
 import mlflow
 import mlflow.sklearn
+import numpy as np
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import KFold, GridSearchCV
+from sklearn.model_selection import KFold, GridSearchCV, cross_validate
 from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeClassifier
 
@@ -27,36 +28,21 @@ from .data import get_dataset
 )
 def train(dataset_path: Path, random_state: int, ) -> None:
     X, y = get_dataset(dataset_path)
-    X_std = StandardScaler().fit_transform(X)
 
-    cv_outer = KFold(n_splits=10, shuffle=True, random_state=random_state)
-    for train_ix, test_ix in cv_outer.split(X):
-        X_train, X_test = X_std[train_ix, :], X_std[test_ix, :]
-        y_train, y_test = y[train_ix], y[test_ix]
+    with mlflow.start_run():
+        model = DecisionTreeClassifier(random_state=random_state)
+
+        params = dict()
+        params['max_features'] = ["auto", "sqrt", "log2"]
+        params['criterion'] = ["gini", "entropy"]
+        params['max_depth'] = [None, 5, 3]
+        params['splitter'] = ['best', 'random']
 
         cv_inner = KFold(n_splits=3, shuffle=True, random_state=random_state)
-        with mlflow.start_run():
-            model = DecisionTreeClassifier(random_state=random_state)
+        search = GridSearchCV(model, params, scoring='accuracy', cv=cv_inner, refit=True)
 
-            space = dict()
-            space['max_features'] = ["auto", "sqrt", "log2"]
-            space['criterion'] = ["gini", "entropy"]
-            space['max_depth'] = [None, 5, 3]
-            space['splitter'] = ['best', 'random']
+        cv_outer = KFold(n_splits=10, shuffle=True, random_state=random_state)
+        score = cross_validate(search, X, y, scoring='accuracy', cv=cv_outer)
 
-            search = GridSearchCV(model, space, scoring='accuracy', cv=cv_inner, refit=True)
-            result = search.fit(X_train, y_train)
-            best_model = result.best_estimator_
-            y_pred = best_model.predict(X_test)
-            accuracy = accuracy_score(y_test, y_pred)
-
-            best_params = result.best_params_
-            mlflow.log_param("max_depth", best_params['max_depth'])
-            mlflow.log_param("random_state", random_state)
-            mlflow.log_param("criterion", best_params['criterion'])
-            mlflow.log_param("splitter", best_params['splitter'])
-            mlflow.log_param("max_features", best_params['max_features'])
-
-            mlflow.log_metric("accuracy", accuracy)
-
-            mlflow.sklearn.log_model(best_model, artifact_path="sklearn-model")
+        mlflow.log_metric("accuracy", np.array(score['test_score']).mean())
+        mlflow.sklearn.log_model(search, artifact_path="sklearn-model")
