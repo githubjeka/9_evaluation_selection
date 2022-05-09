@@ -78,3 +78,18 @@ poetry run pytest
 ```
 
 ![image](https://user-images.githubusercontent.com/874234/167427976-b52a6ea2-26bf-44e3-9773-65d1313a509e.png)
+
+Для форматирования используйте [Black](https://black.readthedocs.io)
+
+```bash
+black src/eval_sel/
+
+# All done! ✨ 🍰 ✨
+# 6 files left unchanged.
+```
+
+Проверка форматирования организована через [flake8](https://flake8.pycqa.org/en/latest/#)
+Используйте следующую команду для запуска этой проверки
+```bash
+flake8 src/eval_sel/
+```
