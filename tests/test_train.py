@@ -42,6 +42,7 @@ def test_run_train_fake_data(runner: CliRunner) -> None:
 
     result = runner.invoke(train, ["--dataset-path", FAKE_DATA_PATH, ], )
     assert result.exit_code == 0
+    os.remove(FAKE_DATA_PATH)
 
 
 def test_error_for_invalid_logreg(runner: CliRunner) -> None:
