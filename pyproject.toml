@@ -8,6 +8,7 @@ authors = ["Evgeniy Tkachenko <et.coder@gmail.com>"]
 train = "eval_sel.train:train"
 tree = "eval_sel.tree:train"
 gridcv = "eval_sel.gridcv:train"
+kaggle = "eval_sel.kaggle:results"
 
 [tool.poetry.dependencies]
 python = ">=3.9"

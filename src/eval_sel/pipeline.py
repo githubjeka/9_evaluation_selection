@@ -1,3 +1,4 @@
+from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -35,6 +36,17 @@ def create_tree(
                 criterion=criterion,
                 splitter=splitter,
             ),
+        )
+    ]
+
+    return Pipeline(steps=pipeline_steps)
+
+
+def create_kaggle_model() -> Pipeline:
+    pipeline_steps = [
+        (
+            "classifier",
+            ExtraTreesClassifier(n_estimators=500, random_state=1, criterion="entropy"),
         )
     ]
 
