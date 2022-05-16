@@ -53,9 +53,11 @@ def apply_feature(
     X["Aspect_hillshade"] = (X["Aspect"] * X["Hillshade_9am"]) / 255
     X["slope_hillshade"] = (X["Slope"] * X["Hillshade_Noon"]) / 255
 
-    X["Elevation_roadways"] = X["Elevation"] - .02 * X["Horizontal_Distance_To_Roadways"]
+    X["Elevation_roadways"] = (
+        X["Elevation"] - 0.02 * X["Horizontal_Distance_To_Roadways"]
+    )
     X["Elevation_vd"] = X["Elevation"] - X["Vertical_Distance_To_Hydrology"]
-    X["Elevation_hd"] = X["Elevation"] - .2 * X["Horizontal_Distance_To_Hydrology"]
+    X["Elevation_hd"] = X["Elevation"] - 0.2 * X["Horizontal_Distance_To_Hydrology"]
     X["Elevation"] = [math.floor(v / 50.0) for v in X["Elevation"]]
 
     X = X.drop(
