@@ -34,20 +34,40 @@ def apply_feature(
     X: pd.DataFrame,
 ) -> pd.DataFrame:
     X = X.drop(["Soil_Type7", "Soil_Type15"], axis=1)
-    a = X["Horizontal_Distance_To_Hydrology"]
-    b = X["Vertical_Distance_To_Hydrology"]
-    X["distance_to_hydrology"] = np.sqrt(np.power(a, 2) + np.power(b, 2))
-    X["Horizontal_distance"] = (
-        X["Horizontal_Distance_To_Hydrology"]
-        + X["Horizontal_Distance_To_Roadways"]
-        + X["Horizontal_Distance_To_Fire_Points"]
-    ) / 3
-    X["average_hillshade"] = (
+    X["DistHydro"] = (
+        X["Horizontal_Distance_To_Hydrology"] ** 2
+        + X["Vertical_Distance_To_Hydrology"] ** 2
+    ) ** 0.5
+    X["RelHydroRoad"] = abs(
+        X["Horizontal_Distance_To_Hydrology"] - X["Horizontal_Distance_To_Roadways"]
+    )
+    X["RelFireRoad"] = abs(
+        X["Horizontal_Distance_To_Fire_Points"] - X["Horizontal_Distance_To_Roadways"]
+    )
+    X["RelHydroFire"] = abs(
+        X["Horizontal_Distance_To_Hydrology"] - X["Horizontal_Distance_To_Fire_Points"]
+    )
+    X["average_hillshade"] = np.mean(
         X["Hillshade_3pm"] + X["Hillshade_Noon"] + X["Hillshade_9am"]
-    ) / 3
+    )
     X["Aspect_hillshade"] = (X["Aspect"] * X["Hillshade_9am"]) / 255
     X["slope_hillshade"] = (X["Slope"] * X["Hillshade_Noon"]) / 255
+
+    X["Elevation_roadways"] = X["Elevation"] - .02 * X["Horizontal_Distance_To_Roadways"]
+    X["Elevation_vd"] = X["Elevation"] - X["Vertical_Distance_To_Hydrology"]
+    X["Elevation_hd"] = X["Elevation"] - .2 * X["Horizontal_Distance_To_Hydrology"]
     X["Elevation"] = [math.floor(v / 50.0) for v in X["Elevation"]]
+
+    X = X.drop(
+        [
+            "Aspect",
+            "Slope",
+            "Hillshade_3pm",
+            "Hillshade_9am",
+            "Hillshade_Noon",
+        ],
+        axis=1,
+    )
     return X
 
 

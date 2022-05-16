@@ -6,7 +6,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 
 def create_pipeline(
-    use_scaler: bool, max_iter: int, log_reg_c: float, random_state: int
+        use_scaler: bool, max_iter: int, log_reg_c: float, random_state: int
 ) -> Pipeline:
     pipeline_steps = []
 
@@ -25,7 +25,7 @@ def create_pipeline(
 
 
 def create_tree(
-    max_depth: int, criterion: str, splitter: str, random_state: int
+        max_depth: int, criterion: str, splitter: str, random_state: int
 ) -> Pipeline:
     pipeline_steps = [
         (
@@ -46,7 +46,16 @@ def create_kaggle_model() -> Pipeline:
     pipeline_steps = [
         (
             "classifier",
-            ExtraTreesClassifier(n_estimators=500, random_state=1, criterion="entropy"),
+            ExtraTreesClassifier(n_estimators=400,
+                                 class_weight={1: 0.1,
+                                               2: .2,
+                                               3: .2,
+                                               4: .3,
+                                               5: .4,
+                                               6: .5,
+                                               7: .6},
+                                 random_state=1,
+                                 criterion="entropy"),
         )
     ]
 
